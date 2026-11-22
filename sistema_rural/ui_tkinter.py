@@ -1,9 +1,9 @@
 """Interfaz gráfica orientada a eventos (evento, listeners, handlers y GUI).
 
-Cómo se evitan las fallas comunes de una interfaz (ver docs/guia_silabo.md):
+Cómo se evitan las fallas comunes de una interfaz:
 1. Validar datos: el ControladorSistema valida antes de registrar y avisa del error.
 2. Asociar eventos: cada botón tiene command= con su handler (_al_...).
-3. No bloquear la interfaz: las operaciones son instantáneas (se midió 0,002 s), así que se
+3. No bloquear la interfaz: las operaciones son instantáneas (se midió Ñ0,002 s), así que se
    muestra "Procesando..." y se actualiza la ventana; no hace falta trabajar en segundo plano.
 4. Manejar excepciones: todo handler pasa por _ejecutar(), que usa try/except.
 5. Separar interfaz y lógica: esta clase solo dibuja y captura acciones; la lógica está en
@@ -65,7 +65,7 @@ class VentanaPrincipal(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self._al_cerrar)   # evento: el usuario cierra la ventana
         self._refrescar_todo()
 
-    # ---------- construcción de la interfaz ----------
+    "construcción de la interfaz"
     def _configurar_estilo(self):
         estilo = ttk.Style(self)
         estilo.theme_use("clam")
@@ -282,7 +282,7 @@ class VentanaPrincipal(tk.Tk):
         self._mostrar(f"ALERTA: stock crítico de {medicamento} ({stock} u.).", COLOR_ALERTA)
         messagebox.showwarning("Stock crítico", f"{medicamento} quedó con {stock} unidades.")
 
-    # ---------- refresco de tablas ----------
+    " refresco de tablas "
     @staticmethod
     def _llenar(arbol, filas, etiqueta=None, ids=None):
         """Borra la tabla y la vuelve a llenar con los datos actuales del registro central."""
@@ -316,7 +316,7 @@ class VentanaPrincipal(tk.Tk):
         self._llenar(self._arbol_citas, self._ctrl.filas_citas(), lambda f: f[4])
         self._llenar(self._arbol_inv, self._ctrl.filas_inventario(), lambda f: "critico" if f[3] == "CRÍTICO" else "")
 
-    # ---------- handlers de acciones del usuario ----------
+    "handlers de acciones del usuario"
     def _mostrar(self, mensaje, color=COLOR_EXITO):
         """Retroalimentación: escribe el mensaje en la barra de estado con su color."""
         self._estado.set(mensaje)
@@ -497,14 +497,14 @@ class VentanaPrincipal(tk.Tk):
                 return
             if decision:
                 self._al_exportar()
-                if self._ctrl.hay_cambios_sin_guardar:   # canceló el guardado o hubo un error
+                if self._ctrl.hay_cambios_sin_guardar:   # cancelar el guardado o hubo un error
                     return
         self.destroy()
 
     def _al_cargar_demo(self):
         self._ejecutar(self._ctrl.cargar_demo, "Datos de demostración cargados (ficticios).", aviso=True)
 
-    # ---------- recetas ----------
+    "recetas"
     def _al_agregar_linea(self):
         def agregar():
             linea = self._ctrl.preparar_linea_receta(self._cb_rec_medic.get(), self._rec_cantidad.get(),
