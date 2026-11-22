@@ -174,6 +174,9 @@ El informe del proyecto documenta **53 pruebas automatizadas aprobadas**:
 | `test_registro.py` | 7 | Singleton, duplicados, conflictos de citas, permisos, inventario y eventos. |
 | `test_reportes.py` | 3 | Reportes por estado y día, resumen y protección del DNI. |
 | `test_controlador.py` | 14 | Flujos de la aplicación, validaciones desde formularios, reportes y exportación. |
+| `test_recetas.py` | 8 | Receta con detalle y descuento de stock; enfermero sin permiso; «todo o nada»; recetas inválidas; reportes funcionales de recetas; borrado de recetas; respaldo cifrado; controlador. |
+| `test_ventana.py` | 4 |test_ventana.py	4	Abre la ventana: alertas de éxito al registrar, error por fecha antigua, flujo de cita y receta con detalle, receta rechazada para el enfermero.  |
+
 | **Total** | **53** | |
 
 Para ejecutar un archivo de pruebas específico:
@@ -226,7 +229,7 @@ Como mejoras futuras se propone incorporar SQLite cifrada, autenticación por us
 - Se incorporó la pestaña **Recetas**, que permite seleccionar un paciente y un médico, asociar opcionalmente una cita y registrar un detalle de medicamento.
 - Solo el personal con rol **Médico** puede emitir recetas. El sistema no dispensa medicamentos automáticamente al registrar una receta.
 - El respaldo cifrado ahora incluye las recetas y sus detalles.
-- Se agregaron pruebas de formato de fecha y del flujo de recetas. Resultado de la suite ejecutada durante esta actualización: **42 pruebas aprobadas**.
+- Se agregaron pruebas de formato de fecha y del flujo de recetas. Resultado de la suite ejecutada durante esta actualización: **53 pruebas aprobadas**.
 
 ### Ejecutar y probar
 
