@@ -1,3 +1,4 @@
+# Garantiza que cada prueba se ejecute con RegistroCentral.
 import pytest
 from sistema_rural.registro import RegistroCentral
 
