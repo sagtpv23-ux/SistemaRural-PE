@@ -1,4 +1,4 @@
-"""Interfaz gráfica orientada a eventos (sílabo, Tema 5: eventos, listeners, handlers y GUI).
+"""Interfaz gráfica orientada a eventos (evento, listeners, handlers y GUI).
 
 Cómo se evitan las fallas comunes de una interfaz (ver docs/guia_silabo.md):
 1. Validar datos: el ControladorSistema valida antes de registrar y avisa del error.
