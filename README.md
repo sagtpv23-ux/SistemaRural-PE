@@ -188,11 +188,11 @@ El informe también registra una cobertura del 97 % en la lógica del sistema y 
 
 | Integrante | Módulos y archivos asignados | Responsabilidad principal |
 |---|---|---|
-| **Arias Correa, Evelin Milagritos** | `modelos.py`, `fabricas.py`, `tests/test_modelos.py` | Modelado de entidades, herencia, polimorfismo y creación de personal mediante Factory. |
-| **Luicho Mosqueira, Hector Alexander** | `seguridad.py`, `validaciones.py`, `tests/test_seguridad.py`, `tests/test_validaciones.py` | Validación de entradas y protección del DNI; hash, enmascaramiento y cifrado de respaldos. |
-| **Malca Malca, Ivan Edilberto** | `registro.py`, `eventos.py`, `excepciones.py`, `tests/test_registro.py` | Registro central, patrón Singleton, eventos Observer, reglas de coordinación y excepciones del dominio. |
-| **Mosqueira Tanta, Saul Alexander** | `controlador.py`, `ui_tkinter.py`, `main.py`, `tests/test_controlador.py` | Integración de la lógica con la interfaz, formularios, pestañas y ejecución de la aplicación. |
-| **Valdez Quiroz, Victor Paul** | `reportes.py`, `tests/test_reportes.py`, `docs/` y `README.md` | Reportes funcionales, documentación técnica y actualización de diagramas y guía del repositorio. |
+| **Arias Correa, Evelin Milagritos** | `modelos.py, `, `fabricas.py`, `tests/test_modelos.py, test_ventana` | Modelado de entidades, herencia, polimorfismo y creación de personal mediante Factory. |
+| **Luicho Mosqueira, Hector Alexander** | `seguridad.py, conftest.py`, `validaciones.py`, `tests/test_seguridad.py`, `tests/test_validaciones.py` | Validación de entradas y protección del DNI; hash, enmascaramiento y cifrado de respaldos. |
+| **Malca Malca, Ivan Edilberto** | `registro.py`, `eventos.py`, `excepciones.py`, `tests/test_reportes.py` | Registro central, patrón Singleton, eventos Observer, reglas de coordinación y excepciones del dominio. |
+| **Mosqueira Tanta, Saul Alexander** | `controlador.py`, `ui_tkinter.py`, `tests/test_controlador.py` | Integración de la lógica con la interfaz, formularios, pestañas y ejecución de la aplicación. |
+| **Valdez Quiroz, Victor Paul** | `reportes.py, main.py`, `tests/test_registro.py, test_recetas.py`, `docs/` y `README.md` | Reportes funcionales, documentación técnica y actualización de diagramas y guía del repositorio. |
 
 ## Limitaciones y mejoras futuras
 
