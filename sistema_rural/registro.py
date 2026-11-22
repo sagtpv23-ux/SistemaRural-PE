@@ -1,4 +1,4 @@
-"""Registro central del establecimiento (patrón Singleton, sílabo 3.4).
+"""Registro central del establecimiento.
 
 Singleton: solo puede existir UN registro en todo el programa. Así todos los módulos
 (consola, interfaz, pruebas) trabajan sobre los mismos datos y no se duplican registros.
@@ -140,7 +140,7 @@ class RegistroCentral:
 
     # --- recetas -----------------------------------------------------
     def emitir_receta(self, paciente: Paciente, medico: PersonalSalud, lineas,
-                      fecha_hora: datetime = None) -> Receta:
+                    fecha_hora: datetime = None) -> Receta:
         """Emite una receta y descuenta el stock. Solo prescribe quien tiene permiso (RF5).
 
         `lineas` es una lista de (medicamento, cantidad, indicaciones). Es "todo o nada": si falta
@@ -194,15 +194,15 @@ class RegistroCentral:
         """Guarda pacientes, citas y recetas cifrados; el DNI solo va enmascarado."""
         datos = {
             "pacientes": [{"dni": p.dni_enmascarado, "nombres": p.nombres,
-                           "apellidos": p.apellidos, "diagnosticos": list(p.diagnosticos)}
-                          for p in self._pacientes.values()],
+                        "apellidos": p.apellidos, "diagnosticos": list(p.diagnosticos)}
+                        for p in self._pacientes.values()],
             "citas": [{"id": c.id, "paciente": c.paciente.dni_enmascarado,
-                       "fecha": f"{c.fecha_hora:%d/%m/%Y %H:%M}", "estado": c.estado.value}
-                      for c in self._citas],
+                    "fecha": f"{c.fecha_hora:%d/%m/%Y %H:%M}", "estado": c.estado.value}
+                    for c in self._citas],
             "recetas": [{"id": r.id, "paciente": r.paciente.dni_enmascarado,
-                         "medico": r.medico.nombre_completo, "fecha": f"{r.fecha_hora:%d/%m/%Y %H:%M}",
-                         "detalles": [{"medicamento": d.medicamento, "cantidad": d.cantidad,
-                                       "indicaciones": d.indicaciones} for d in r.detalles]}
+                        "medico": r.medico.nombre_completo, "fecha": f"{r.fecha_hora:%d/%m/%Y %H:%M}",
+                        "detalles": [{"medicamento": d.medicamento, "cantidad": d.cantidad,
+                                    "indicaciones": d.indicaciones} for d in r.detalles]}
                         for r in self._recetas],
         }
         with open(ruta, "wb") as archivo:
