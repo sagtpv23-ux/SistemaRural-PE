@@ -1,4 +1,4 @@
-"""Paradigma orientado a eventos (sílabo, Tema 5.1: eventos, listeners y handlers).
+"""Paradigma orientado a eventos.
 
 Un "evento" es algo que ocurre en el sistema (por ejemplo, "stock_bajo").
 Un "listener" (oyente) es una función que se suscribe a un evento y se ejecuta
