@@ -174,6 +174,9 @@ El informe del proyecto documenta **53 pruebas automatizadas aprobadas**:
 | `test_registro.py` | 7 | Singleton, duplicados, conflictos de citas, permisos, inventario y eventos. |
 | `test_reportes.py` | 3 | Reportes por estado y día, resumen y protección del DNI. |
 | `test_controlador.py` | 14 | Flujos de la aplicación, validaciones desde formularios, reportes y exportación. |
+| `test_recetas.py` | 8 | Receta con detalle y descuento de stock; enfermero sin permiso; «todo o nada»; recetas inválidas; reportes funcionales de recetas; borrado de recetas; respaldo cifrado; controlador. |
+| `test_ventana.py` | 4 |test_ventana.py	4	Abre la ventana: alertas de éxito al registrar, error por fecha antigua, flujo de cita y receta con detalle, receta rechazada para el enfermero.  |
+
 | **Total** | **53** | |
 
 Para ejecutar un archivo de pruebas específico:
@@ -188,11 +191,11 @@ El informe también registra una cobertura del 97 % en la lógica del sistema y 
 
 | Integrante | Módulos y archivos asignados | Responsabilidad principal |
 |---|---|---|
-| **Arias Correa, Evelin Milagritos** | `modelos.py`, `fabricas.py`, `tests/test_modelos.py` | Modelado de entidades, herencia, polimorfismo y creación de personal mediante Factory. |
-| **Luicho Mosqueira, Hector Alexander** | `seguridad.py`, `validaciones.py`, `tests/test_seguridad.py`, `tests/test_validaciones.py` | Validación de entradas y protección del DNI; hash, enmascaramiento y cifrado de respaldos. |
-| **Malca Malca, Ivan Edilberto** | `registro.py`, `eventos.py`, `excepciones.py`, `tests/test_registro.py` | Registro central, patrón Singleton, eventos Observer, reglas de coordinación y excepciones del dominio. |
-| **Mosqueira Tanta, Saul Alexander** | `controlador.py`, `ui_tkinter.py`, `main.py`, `tests/test_controlador.py` | Integración de la lógica con la interfaz, formularios, pestañas y ejecución de la aplicación. |
-| **Valdez Quiroz, Victor Paul** | `reportes.py`, `tests/test_reportes.py`, `docs/` y `README.md` | Reportes funcionales, documentación técnica y actualización de diagramas y guía del repositorio. |
+| **Arias Correa, Evelin Milagritos** | `modelos.py, `, `fabricas.py`, `tests/test_modelos.py, test_ventana` | Modelado de entidades, herencia, polimorfismo y creación de personal mediante Factory. |
+| **Luicho Mosqueira, Hector Alexander** | `seguridad.py, conftest.py`, `validaciones.py`, `tests/test_seguridad.py`, `tests/test_validaciones.py` | Validación de entradas y protección del DNI; hash, enmascaramiento y cifrado de respaldos. |
+| **Malca Malca, Ivan Edilberto** | `registro.py`, `eventos.py`, `excepciones.py`, `tests/test_reportes.py` | Registro central, patrón Singleton, eventos Observer, reglas de coordinación y excepciones del dominio. |
+| **Mosqueira Tanta, Saul Alexander** | `controlador.py`, `ui_tkinter.py`, `tests/test_controlador.py` | Integración de la lógica con la interfaz, formularios, pestañas y ejecución de la aplicación. |
+| **Valdez Quiroz, Victor Paul** | `reportes.py, main.py`, `tests/test_registro.py, test_recetas.py`, `docs/` y `README.md` | Reportes funcionales, documentación técnica y actualización de diagramas y guía del repositorio. |
 
 ## Limitaciones y mejoras futuras
 
@@ -226,7 +229,7 @@ Como mejoras futuras se propone incorporar SQLite cifrada, autenticación por us
 - Se incorporó la pestaña **Recetas**, que permite seleccionar un paciente y un médico, asociar opcionalmente una cita y registrar un detalle de medicamento.
 - Solo el personal con rol **Médico** puede emitir recetas. El sistema no dispensa medicamentos automáticamente al registrar una receta.
 - El respaldo cifrado ahora incluye las recetas y sus detalles.
-- Se agregaron pruebas de formato de fecha y del flujo de recetas. Resultado de la suite ejecutada durante esta actualización: **42 pruebas aprobadas**.
+- Se agregaron pruebas de formato de fecha y del flujo de recetas. Resultado de la suite ejecutada durante esta actualización: **53 pruebas aprobadas**.
 
 ### Ejecutar y probar
 
