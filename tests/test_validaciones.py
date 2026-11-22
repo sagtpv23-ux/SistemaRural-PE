@@ -11,7 +11,7 @@ from sistema_rural.seguridad import hash_dni
 def _paciente(nombres="Juan", apellidos="Pérez"):
     return Paciente("00000002", nombres, apellidos, date(1990, 1, 1))
 
-
+# Verifica que el sistema rechace nombres y apellidos inválidos.
 def test_nombres_y_apellidos_rechazan_numeros_y_simbolos():
     for malo in ["Juan3", "123", "J@n", "Ana_Cruz", "<script>", "A", "--", "x" * 60, ""]:
         with pytest.raises(ValueError):
