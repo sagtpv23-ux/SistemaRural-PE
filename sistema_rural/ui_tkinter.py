@@ -263,7 +263,7 @@ class VentanaPrincipal(tk.Tk):
         self._texto = tk.Text(pagina, height=20, font=("Consolas", 10), state="disabled", bg="#FBFCFC")
         self._texto.pack(fill="both", expand=True, pady=(10, 0))
 
-    # ---------- eventos del dominio (Observer) ----------
+    "eventos del dominio (Observer)"
     def _suscribir_eventos(self):
         bus = self._ctrl.registro.eventos
         bus.suscribir("paciente_registrado", self._evento_datos)
