@@ -17,7 +17,6 @@ _SAL = os.environ.get("SISTEMA_RURAL_SAL", "sal-demo-cambiar-en-produccion").enc
 
 def validar_dni(dni: str) -> str:
     """Devuelve el DNI si tiene 8 dígitos; si no, lanza DniInvalidoError."""
-    # Un DNI válido es un texto de exactamente 8 caracteres, todos dígitos del 0 al 9
     if not isinstance(dni, str) or len(dni) != 8 or not dni.isascii() or not dni.isdigit():
         raise DniInvalidoError("El DNI debe tener exactamente 8 dígitos (solo números).")
     if dni == "00000000":
