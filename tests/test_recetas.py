@@ -110,4 +110,4 @@ def test_controlador_prepara_lineas_emite_y_muestra_el_detalle():
         ctrl.emitir_receta(paciente, medico, [])
     with pytest.raises(ErrorSistemaRural):
         ctrl.filas_detalle_receta(99)
-    assert "RECETAS EMITIDAS: 2" in ctrl.texto_reporte()
+    assert "RECETAS EMITIDAS: 2" in ctrl.texto_reporte()

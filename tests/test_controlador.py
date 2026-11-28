@@ -16,12 +16,18 @@ def _controlador():
     return ctrl
 
 
+def test_registrar_paciente_acepta_fecha_peruana():
+    ctrl = ControladorSistema()
+    paciente = ctrl.registrar_paciente("00000005", "Ana", "Cruz", "14/03/1990")
+    assert paciente.edad() >= 36 and len(ctrl.filas_pacientes()) == 1
+
+
 def test_registrar_paciente_rechaza_fecha_invalida_o_futura():
     ctrl = ControladorSistema()
-    with pytest.raises(ErrorSistemaRural):
-        ctrl.registrar_paciente("00000005", "Ana", "Cruz", "14/03/1990")
-    with pytest.raises(ErrorSistemaRural):
-        ctrl.registrar_paciente("00000005", "Ana", "Cruz", "2999-01-01")
+    for mala in ["2999-01-01", "01/01/2999", "31/02/1990", "1990-03-14", "5/1/2000", "texto", ""]:
+        with pytest.raises(ErrorSistemaRural):
+            ctrl.registrar_paciente("00000005", "Ana", "Cruz", mala)
+    assert ctrl.filas_pacientes() == []               # ningún intento inválido dejó un registro
 
 
 def test_filas_pacientes_no_exponen_el_dni_completo():
@@ -34,7 +40,7 @@ def test_filas_pacientes_no_exponen_el_dni_completo():
 def test_programar_cita_desde_formulario_y_validar_hora():
     ctrl = _controlador()
     (_, paciente), (_, personal) = ctrl.opciones_pacientes()[0], ctrl.opciones_personal()[0]
-    fecha = (date.today() + timedelta(days=30)).isoformat()      # siempre una fecha futura
+    fecha = (date.today() + timedelta(days=30)).strftime("%d/%m/%Y")      # siempre una fecha futura
     ctrl.programar_cita(paciente, personal, fecha, "08:00", "Control")
     assert any(f[1] == f"{fecha} 08:00" and f[4] == "programada" for f in ctrl.filas_citas())
     with pytest.raises(ErrorSistemaRural):
@@ -129,10 +135,10 @@ def test_agregar_medicamento_desde_el_formulario():
 def test_flujo_completo_sin_datos_de_demostracion():
     ctrl = ControladorSistema()
     ctrl.registrar_personal("Médico", "00000011", "Rosa", "Salazar Vega", "CMP-00011")
-    ctrl.registrar_paciente("00000020", "Carlos", "Mendoza Ruiz", "1992-05-14")
+    ctrl.registrar_paciente("00000020", "Carlos", "Mendoza Ruiz", "14/05/1992")
     ctrl.agregar_medicamento("Amoxicilina 500 mg", "30", "10")
     paciente, personal = ctrl.opciones_pacientes()[0][1], ctrl.opciones_personal()[0][1]
-    fecha = (date.today() + timedelta(days=5)).isoformat()
+    fecha = (date.today() + timedelta(days=5)).strftime("%d/%m/%Y")
     ctrl.programar_cita(paciente, personal, fecha, "10:00", "Control general")
     ctrl.dispensar("Amoxicilina 500 mg", "5", personal)
     assert ctrl.filas_inventario()[0][1] == 25
@@ -142,9 +148,22 @@ def test_flujo_completo_sin_datos_de_demostracion():
 def test_aviso_de_cambios_sin_guardar_hasta_exportar_respaldo(tmp_path):
     ctrl = ControladorSistema()
     assert not ctrl.hay_cambios_sin_guardar            # recién abierto: nada por guardar
-    ctrl.registrar_paciente("00000005", "Ana", "Cruz", "1990-03-14")
+    ctrl.registrar_paciente("00000005", "Ana", "Cruz", "14/03/1990")
     assert ctrl.hay_cambios_sin_guardar                # hay un paciente sin respaldar
     ctrl.exportar_respaldo(str(tmp_path / "respaldo.bin"))
     assert not ctrl.hay_cambios_sin_guardar            # tras guardar, se puede cerrar sin aviso
-    ctrl.registrar_paciente("00000006", "Luis", "Rojas", "1985-01-20")
+    ctrl.registrar_paciente("00000006", "Luis", "Rojas", "20/01/1985")
     assert ctrl.hay_cambios_sin_guardar                # cualquier cambio nuevo vuelve a avisar
+
+
+def test_controlador_funciona_con_un_registro_inyectado():
+    """Inversión de dependencias: el controlador recibe su registro y no depende de uno concreto."""
+    from sistema_rural.eventos import BusEventos
+
+    class RegistroFalso:
+        eventos = BusEventos()
+        pacientes = ()
+
+    falso = RegistroFalso()
+    ctrl = ControladorSistema(registro=falso)
+    assert ctrl.registro is falso and ctrl.filas_pacientes() == []

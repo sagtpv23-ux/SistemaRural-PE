@@ -4,6 +4,9 @@ Un "evento" es algo que ocurre en el sistema (por ejemplo, "stock_bajo").
 Un "listener" (oyente) es una función que se suscribe a un evento y se ejecuta
 cuando este ocurre. Esta clase actúa como un tablero de avisos (patrón Observer).
 """
+import logging
+
+registro_log = logging.getLogger(__name__)
 
 
 class BusEventos:
@@ -20,7 +23,7 @@ class BusEventos:
     def publicar(self, evento, **datos):
         """Avisa a todos los oyentes del evento y devuelve cuántos fueron notificados.
 
-        Si un oyente falla, se muestra un aviso y se continúa con los demás.
+        Si un oyente falla, se registra el error en el log y se continúa con los demás.
         """
         notificados = 0
         for manejador in self._oyentes.get(evento, []):
@@ -28,5 +31,5 @@ class BusEventos:
                 manejador(**datos)
                 notificados += 1
             except Exception as error:
-                print(f"[aviso] el manejador del evento '{evento}' falló: {error}")
+                registro_log.warning("El manejador del evento '%s' falló: %s", evento, error)
         return notificados

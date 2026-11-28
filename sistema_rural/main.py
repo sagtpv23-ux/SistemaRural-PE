@@ -2,7 +2,7 @@
 from datetime import date, datetime
 
 from .excepciones import ErrorSistemaRural
-from .seguridad import generar_clave
+from .seguridad import descifrar_texto, generar_clave
 from .fabricas import PersonalFactory
 from .modelos import Paciente
 from .registro import RegistroCentral
@@ -57,9 +57,15 @@ def main() -> None:
     print("\nPor estado:", reportes.citas_por_estado(reg.citas))
     print("Edad promedio:", reportes.edad_promedio(reg.pacientes, date(2026, 11, 3)))
     print("Medicamentos críticos:", [m.nombre for m in reportes.medicamentos_criticos(reg.inventario)])
-    reg.exportar_cifrado("respaldo_demo.bin", generar_clave())
+    clave = generar_clave()
+    reg.exportar_cifrado("respaldo_demo.bin", clave)
     print("Respaldo cifrado generado: respaldo_demo.bin")
+    print("Clave de la demostración (en el sistema real se guarda aparte):", clave.decode())
+    with open("respaldo_demo.bin", "rb") as archivo:      # comprobación: la clave sí abre el respaldo
+        contenido = descifrar_texto(archivo.read(), clave)
+    print("Verificación: el respaldo se descifró bien y no contiene el DNI completo:",
+          "00000002" not in contenido)
 
 
 if __name__ == "__main__":
-    main()
+    main()

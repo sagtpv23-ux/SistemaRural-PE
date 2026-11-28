@@ -76,3 +76,22 @@ def test_manejador_defectuoso_no_interrumpe_a_los_demas():
     bus.suscribir("e", lambda **d: 1 / 0)
     bus.suscribir("e", lambda **d: recibidos.append(d))
     assert bus.publicar("e", x=1) == 1 and recibidos == [{"x": 1}]
+
+
+def test_personal_duplicado_lanza_su_propio_error():
+    """Registrar dos veces al mismo profesional lanza PersonalDuplicadoError (no el de pacientes)."""
+    from sistema_rural.excepciones import PersonalDuplicadoError, RegistroDuplicadoError
+    reg = RegistroCentral()
+    reg.registrar_personal(PersonalFactory.crear("medico", "00000001", "Rosa", "Vega", "CMP-1"))
+    with pytest.raises(PersonalDuplicadoError) as error:
+        reg.registrar_personal(PersonalFactory.crear("medico", "00000001", "Rosa", "Vega", "CMP-1"))
+    assert isinstance(error.value, RegistroDuplicadoError) and not isinstance(error.value, PacienteDuplicadoError)
+
+
+def test_manejador_defectuoso_se_registra_en_el_log(caplog):
+    from sistema_rural.eventos import BusEventos
+    bus = BusEventos()
+    bus.suscribir("e", lambda **d: 1 / 0)
+    with caplog.at_level("WARNING"):
+        bus.publicar("e")
+    assert "falló" in caplog.text

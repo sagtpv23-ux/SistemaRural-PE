@@ -264,4 +264,4 @@ class ControladorSistema:
         self._reg.programar_cita_para(pacientes[2], enfermero, base.replace(hour=10), "Curación")
         self._reg.emitir_receta(pacientes[0], medico, [
             ("Ibuprofeno 400 mg", 6, "1 tableta cada 8 horas por 2 días"),
-            ("Paracetamol 500 mg", 3, "1 tableta si hay fiebre")])
+            ("Paracetamol 500 mg", 3, "1 tableta si hay fiebre")])

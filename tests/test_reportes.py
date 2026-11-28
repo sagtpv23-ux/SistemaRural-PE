@@ -33,3 +33,18 @@ def test_filtrar_citas_del_dia_y_resumen_sin_dni_completo():
 def test_edad_promedio():
     reg = _escenario()
     assert reportes.edad_promedio(reg.pacientes, date(2026, 1, 1)) == 36.0
+
+
+def test_reportes_no_modifican_los_datos_originales():
+    """Paradigma funcional: las funciones devuelven resultados nuevos y no alteran las colecciones."""
+    reg = _escenario()
+    citas, pacientes = reg.citas, reg.pacientes
+    reportes.citas_por_estado(citas)
+    reportes.resumen_citas(citas)
+    reportes.edad_promedio(pacientes, date(2026, 1, 1))
+    assert reg.citas == citas and reg.pacientes == pacientes
+    assert [c.estado.value for c in citas] == ["atendida", "programada"]
+
+
+def test_edad_promedio_sin_pacientes_es_cero():
+    assert reportes.edad_promedio(()) == 0.0

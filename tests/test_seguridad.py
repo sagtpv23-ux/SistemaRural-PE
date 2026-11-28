@@ -29,3 +29,21 @@ def test_cifrado_de_ida_y_vuelta_y_clave_incorrecta():
     assert descifrar_texto(token, clave) == "dato sensible"
     with pytest.raises(InvalidToken):
         descifrar_texto(token, generar_clave())
+
+
+def test_la_sal_viene_del_entorno_o_es_aleatoria():
+    """Sin variable de entorno no hay secreto fijo en el código: cada ejecución usa una sal distinta."""
+    from sistema_rural.seguridad import leer_sal
+    assert leer_sal({"SISTEMA_RURAL_SAL": "mi-sal-secreta"}) == b"mi-sal-secreta"
+    primera, segunda = leer_sal({}), leer_sal({})
+    assert len(primera) == 32 and primera != segunda
+    assert b"sal-demo" not in primera
+
+
+def test_hash_del_dni_depende_de_la_sal(monkeypatch):
+    """El mismo DNI con otra sal produce otro hash: sin la sal no se puede reconstruir el DNI."""
+    from sistema_rural import seguridad
+    monkeypatch.setattr(seguridad, "_SAL", b"sal-uno")
+    uno = seguridad.hash_dni("00000002")
+    monkeypatch.setattr(seguridad, "_SAL", b"sal-dos")
+    assert uno != seguridad.hash_dni("00000002") and len(uno) == 64

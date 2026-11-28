@@ -9,8 +9,16 @@ class DniInvalidoError(ErrorSistemaRural):
     """El DNI no tiene exactamente 8 dígitos."""
 
 
-class PacienteDuplicadoError(ErrorSistemaRural):
+class RegistroDuplicadoError(ErrorSistemaRural):
+    """Ya existe un registro con el mismo DNI (base de los errores de duplicado)."""
+
+
+class PacienteDuplicadoError(RegistroDuplicadoError):
     """Ya existe un paciente con el mismo DNI."""
+
+
+class PersonalDuplicadoError(RegistroDuplicadoError):
+    """Ya existe personal de salud con el mismo DNI."""
 
 
 class PacienteNoEncontradoError(ErrorSistemaRural):

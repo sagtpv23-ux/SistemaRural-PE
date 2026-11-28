@@ -9,7 +9,7 @@ from datetime import datetime
 from .eventos import BusEventos
 from .excepciones import (CitaConflictoError, CitaNoEncontradaError, ErrorSistemaRural,
                           PacienteDuplicadoError, PacienteNoEncontradoError,
-                          PermisoDenegadoError, StockInsuficienteError)
+                          PermisoDenegadoError, PersonalDuplicadoError, StockInsuficienteError)
 from .modelos import (Cita, DetalleReceta, EstadoCita, Inventario, Paciente, PersonalSalud,
                       Receta)
 from .seguridad import cifrar_texto, hash_dni
@@ -86,7 +86,7 @@ class RegistroCentral:
     # --- personal de salud -------------------------------------------
     def registrar_personal(self, personal: PersonalSalud) -> None:
         if personal.dni_hash in self._personal:
-            raise PacienteDuplicadoError("Ya existe personal con ese DNI.")
+            raise PersonalDuplicadoError("Ya existe personal con ese DNI.")
         self._personal[personal.dni_hash] = personal
         self.eventos.publicar("personal_registrado", personal=personal)
 

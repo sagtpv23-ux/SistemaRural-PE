@@ -1,7 +1,9 @@
 """Protección de datos personales (Ley N.° 29733)."""
 import hashlib
 import hmac
+import logging
 import os
+import secrets
 
 from .excepciones import CifradoNoDisponibleError, DniInvalidoError
 
@@ -11,8 +13,27 @@ try:
 except ImportError:  # pragma: no cover
     Fernet = None
 
-# La sal se lee del entorno; el valor por defecto es solo para demostración.
-_SAL = os.environ.get("SISTEMA_RURAL_SAL", "sal-demo-cambiar-en-produccion").encode()
+registro_log = logging.getLogger(__name__)
+
+
+def leer_sal(entorno=None) -> bytes:
+    """Obtiene la sal secreta del HMAC desde la variable de entorno SISTEMA_RURAL_SAL.
+
+    Si no está configurada se genera una sal aleatoria para esta ejecución: así el código no
+    contiene ningún secreto fijo (con una sal conocida, un DNI de 8 dígitos se podría recuperar
+    probando los 100 millones de combinaciones). Como los datos viven solo en memoria, una sal
+    distinta en cada ejecución no rompe nada; si algún día se persistieran los hashes, la sal
+    tendría que fijarse con la variable de entorno.
+    """
+    entorno = os.environ if entorno is None else entorno
+    valor = entorno.get("SISTEMA_RURAL_SAL")
+    if valor:
+        return valor.encode("utf-8")
+    registro_log.warning("SISTEMA_RURAL_SAL no está configurada: se usa una sal aleatoria temporal.")
+    return secrets.token_bytes(32)
+
+
+_SAL = leer_sal()
 
 
 def validar_dni(dni: str) -> str:

@@ -551,5 +551,30 @@ class VentanaPrincipal(tk.Tk):
         self._llenar(self._arbol_detalle, filas)
 
 
+# CANDADO: No deja abrir 2 ventanas al mismo tiempo
+import os, sys, tempfile, atexit
+
+def _poner_candado():
+    ruta = os.path.join(tempfile.gettempdir(), "sistema_rural_santa_rosa.lock")
+    try:
+        # O_EXCL = si el archivo ya existe, falla = ya hay una ventana abierta
+        fd = os.open(ruta, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        os.write(fd, str(os.getpid()).encode())
+        os.close(fd)
+        # Cuando se cierre el programa, borra el candado
+        atexit.register(lambda: os.path.exists(ruta) and os.remove(ruta))
+        return True
+    except FileExistsError:
+        return False
+
 if __name__ == "__main__":
+    if not _poner_candado():
+        # Si ya hay una ventana, no abre otra, solo avisa
+        import tkinter as tk
+        from tkinter import messagebox
+        ventana_aviso = tk.Tk()
+        ventana_aviso.withdraw()
+        messagebox.showwarning("SistemaRural-PE", "Ya hay una ventana del sistema abierta.\nCierra la otra ventana primero.")
+        ventana_aviso.destroy()
+        sys.exit()
     VentanaPrincipal().mainloop()
